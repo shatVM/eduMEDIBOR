@@ -1,0 +1,92 @@
+[
+  {
+    "id": "bls",
+    "title": "BLS (Basic Life Support)",
+    "description": "Базова серцево-легенева реанімація",
+    "duration": "8 годин",
+    "price": "2500 грн",
+    "image": "/images/bls.svg",
+    "category": "emergency",
+    "lessons": [
+      {
+        "title": "Вступ до BLS",
+        "content": "Основи базової серцево-легеневої реанімації",
+        "videoUrl": "",
+        "duration": "30 хв",
+        "quiz": [
+          {
+            "question": "Яка частота компресій грудної клітки при СЛР?",
+            "options": [
+              "80-100/хв",
+              "100-120/хв",
+              "120-140/хв",
+              "60-80/хв"
+            ],
+            "correct": 1
+          }
+        ]
+      },
+      {
+        "title": "Техніка компресій",
+        "content": "Правильна техніка виконання компресій грудної клітки",
+        "videoUrl": "",
+        "duration": "45 хв",
+        "quiz": []
+      }
+    ]
+  },
+  {
+    "id": "acls",
+    "title": "ACLS (Advanced Cardiac Life Support)",
+    "description": "Розширена серцево-легенева реанімація",
+    "duration": "16 годин",
+    "price": "4500 грн",
+    "image": "/images/acls.svg",
+    "category": "emergency",
+    "lessons": [
+      {
+        "title": "Алгоритми ACLS",
+        "content": "Основні алгоритми невідкладної допомоги",
+        "videoUrl": "",
+        "duration": "60 хв",
+        "quiz": []
+      }
+    ]
+  },
+  {
+    "id": "pediatric-care",
+    "title": "Невідкладна педіатрична допомога",
+    "description": "Особливості надання невідкладної допомоги дітям",
+    "duration": "12 годин",
+    "price": "3500 грн",
+    "image": "/images/pediatric.svg",
+    "category": "pediatrics",
+    "lessons": [
+      {
+        "title": "Педіатрична оцінка",
+        "content": "Швидка оцінка стану дитини",
+        "videoUrl": "",
+        "duration": "40 хв",
+        "quiz": []
+      }
+    ]
+  },
+  {
+    "id": "traumatology",
+    "title": "Травматологія",
+    "description": "Надання допомоги при травмах",
+    "duration": "10 годин",
+    "price": "3000 грн",
+    "image": "/images/trauma.svg",
+    "category": "trauma",
+    "lessons": [
+      {
+        "title": "Оцінка травм",
+        "content": "Первинна та вторинна оцінка травмованого пацієнта",
+        "videoUrl": "",
+        "duration": "50 хв",
+        "quiz": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,105 @@
+{{!-- views/index.hbs --}}
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Навчальні курси<br>для медиків</h1>
+      <p>Отримайте знання та сертифікат<br>для вашої кар'єри</p>
+      <div class="hero-actions">
+        <a href="/courses" class="btn-primary">Обрати курс</a>
+        <a href="/about" class="btn-secondary">Детальніше</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon">✓</div>
+        <div class="stat-value">{{stats.satisfaction}}%</div>
+        <div class="stat-label">Успішність<br>слухачів клінік</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">{{stats.graduates}}</div>
+        <div class="stat-label">Випускників</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">⏱</div>
+        <div class="stat-value">{{stats.experience}}</div>
+        <div class="stat-label">років<br>Досвіду навчання</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="popular-courses">
+  <div class="container">
+    <h2>Популярні курси</h2>
+    <div class="courses-grid">
+      {{#each courses}}
+      <div class="course-card">
+        <div class="course-image">
+          <img src="{{image}}" alt="{{title}}">
+        </div>
+        <div class="course-content">
+          <h3>{{title}}</h3>
+          <p>{{description}}</p>
+          <div class="course-meta">
+            <span>⏱ {{duration}}</span>
+            <span>💰 {{price}}</span>
+          </div>
+          <a href="/course/{{id}}" class="btn-secondary">Детальніше →</a>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <div class="text-center">
+      <a href="/courses" class="btn-primary">Всі курси</a>
+    </div>
+  </div>
+</section>
+
+<section class="advantages">
+  <div class="container">
+    <h2>Наші переваги</h2>
+    <div class="advantages-grid">
+      <div class="advantage-card">
+        <div class="advantage-icon">🛡️</div>
+        <h3>Сучасні методики</h3>
+        <p>Використовуємо найновіші підходи до навчання медичного персоналу</p>
+      </div>
+      <div class="advantage-card">
+        <div class="advantage-icon">👨‍⚕️</div>
+        <h3>Кваліфіковані інструктори</h3>
+        <p>Наші викладачі - практикуючі медики з великим досвідом</p>
+      </div>
+      <div class="advantage-card">
+        <div class="advantage-icon">📜</div>
+        <h3>Сертифікати міжнародного зразка</h3>
+        <p>Отримайте визнаний сертифікат після завершення курсу</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="enrollment" id="enrollment">
+  <div class="container">
+    <h2>Залиште заявку</h2>
+    <p>Запишіться на курс просто зараз!</p>
+    <form id="enrollmentForm" class="enrollment-form">
+      <input type="text" name="name" placeholder="Ваше ім'я" required>
+      <input type="tel" name="phone" placeholder="Ваш телефон" required>
+      <input type="email" name="email" placeholder="E-mail" required>
+      <select name="courseId" required>
+        <option value="">Оберіть курс</option>
+        {{#each courses}}
+        <option value="{{id}}">{{title}}</option>
+        {{/each}}
+      </select>
+      <button type="submit" class="btn-primary">Відправити заявку →</button>
+    </form>
+    <div id="formMessage" class="form-message"></div>
+  </div>
+</section>

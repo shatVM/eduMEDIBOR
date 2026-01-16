@@ -1,0 +1,66 @@
+{{!-- views/learn.hbs --}}
+<section class="hero">
+  <div class="container">
+    <h1 id="courseTitle">{{course.title}}</h1>
+    <p>Інтерактивне навчання</p>
+  </div>
+</section>
+
+<section class="page-content" style="padding: 0; background: white;">
+  <div class="container-fluid" style="max-width: 100%; padding: 0;">
+    <div class="learning-grid">
+      <div class="sidebar-lessons">
+        <h3>Уроки курсу</h3>
+        <div class="lessons-nav" id="lessonsNav">
+          {{#each course.lessons}}
+          <div class="lesson-nav-item {{#if (eq @index ../currentLesson)}}active{{/if}}" data-index="{{@index}}">
+            <span class="lesson-num">{{inc @index}}</span>
+            <span class="lesson-title">{{title}}</span>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      
+      <div class="lesson-content">
+        <div class="lesson-header">
+          <h1 id="lessonTitle">Завантаження...</h1>
+          <div class="lesson-progress">
+            <span id="lessonProgress">0 / {{course.lessons.length}}</span>
+          </div>
+        </div>
+        
+        <div class="lesson-body">
+          <div id="lessonContent">
+            <p>Завантаження уроку...</p>
+          </div>
+          
+          <div id="videoContainer" style="display:none;">
+            <video id="lessonVideo" controls width="100%">
+              <source src="" type="video/mp4">
+            </video>
+          </div>
+          
+          <div id="quizContainer" style="display:none;">
+            <h3>Тестування</h3>
+            <div id="quizQuestions"></div>
+            <button id="checkQuiz" class="btn-primary">Перевірити відповіді</button>
+          </div>
+        </div>
+        
+        <div class="lesson-navigation">
+          <button id="prevLesson" class="btn-secondary">← Попередній урок</button>
+          <button id="completeLesson" class="btn-primary">Завершити урок</button>
+          <button id="nextLesson" class="btn-primary">Наступний урок →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const courseId = '{{course.id}}';
+  const totalLessons = {{course.lessons.length}};
+  let currentLesson = {{currentLesson}};
+  const userId = 'user_' + Date.now(); // В реальному додатку це має бути ID авторизованого користувача
+</script>
+<script src="/js/learn.js"></script>

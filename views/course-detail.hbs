@@ -1,0 +1,53 @@
+{{!-- views/course-detail.hbs --}}
+<section class="hero">
+  <div class="container">
+    <h1>{{course.title}}</h1>
+    <p>{{course.description}}</p>
+  </div>
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <div class="course-detail-grid">
+      <div class="course-main">
+        <div class="course-image-large">
+          <img src="{{course.image}}" alt="{{course.title}}">
+        </div>
+        
+        <h2>Про курс</h2>
+        <p>{{course.description}}</p>
+        
+        <h2>Програма курсу</h2>
+        <div class="lessons-list">
+          {{#each course.lessons}}
+          <div class="lesson-item">
+            <div class="lesson-number">{{inc @index}}</div>
+            <div class="lesson-info">
+              <h3>{{title}}</h3>
+              <p>{{content}}</p>
+              <span class="lesson-duration">⏱ {{duration}}</span>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      
+      <div class="course-sidebar">
+        <div class="course-info-card">
+          <h3>Інформація про курс</h3>
+          <ul>
+            <li><strong>Тривалість:</strong> {{course.duration}}</li>
+            <li><strong>Вартість:</strong> {{course.price}}</li>
+            <li><strong>Кількість уроків:</strong> {{course.lessons.length}}</li>
+            <li><strong>Сертифікат:</strong> Так</li>
+          </ul>
+          <a href="/course/{{course.id}}/learn" class="btn-primary btn-full">Почати навчання</a>
+          <a href="#enrollment" class="btn-secondary btn-full">Записатися на курс</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+

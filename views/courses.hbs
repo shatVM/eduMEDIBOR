@@ -1,0 +1,34 @@
+{{!-- views/courses.hbs --}}
+<section class="hero">
+  <div class="container">
+    <h1>Навчальні курси</h1>
+    <p>Оберіть курс для професійного розвитку</p>
+  </div>
+</section>
+
+<section class="courses-section">
+  <div class="container">
+    <div class="courses-grid">
+      {{#each courses}}
+      <div class="course-card">
+        <div class="course-image">
+          <img src="{{image}}" alt="{{title}}">
+        </div>
+        <div class="course-content">
+          <h3>{{title}}</h3>
+          <p>{{description}}</p>
+          <div class="course-meta">
+            <span>⏱ {{duration}}</span>
+            <span>💰 {{price}}</span>
+            <span>📚 {{lessons.length}} уроків</span>
+          </div>
+          <div class="course-actions">
+            <a href="/course/{{id}}" class="btn-secondary">Детальніше</a>
+            <a href="/course/{{id}}/learn" class="btn-primary">Почати навчання</a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section>

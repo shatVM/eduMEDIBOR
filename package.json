@@ -1,0 +1,25 @@
+{
+  "name": "med-edu-learning-platform",
+  "version": "1.0.0",
+  "description": "Платформа навчальних курсів для медиків",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "education",
+    "medical",
+    "courses",
+    "learning"
+  ],
+  "author": "MED_EDU",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "hbs": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

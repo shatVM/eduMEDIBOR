@@ -58,9 +58,11 @@
 </section>
 
 <script>
+  // Pass data from server-side template to client-side JS
   const courseId = '{{course.id}}';
-  const totalLessons = {{course.lessons.length}};
-  let currentLesson = {{currentLesson}};
-  const userId = 'user_' + Date.now(); // В реальному додатку це має бути ID авторизованого користувача
+  // The 'lessons' variable is now a full array of objects
+  const lessons = {{{json course.lessons}}}; 
+  // Set the initial lesson to the first one in the list
+  const currentLessonId = lessons.length > 0 ? lessons[0].id : null;
 </script>
 <script src="/js/learn.js"></script>

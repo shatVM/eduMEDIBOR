@@ -17,9 +17,36 @@
   
   {{> footer}}
   
+  {{> modal}}
+
+  <!-- Hidden login form template for modal injection -->
+  <div id="loginFormTemplate" style="display:none">
+    <button type="button" class="btn btn-danger btn-block mb-2" onclick="googleLogin()">
+      <img src="https://developers.google.com/identity/images/g-logo.png" style="width:20px; margin-right:8px; vertical-align:middle;"> Вхід через Google
+    </button>
+    <div class="text-center text-muted mb-2">або</div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" class="form-control" id="loginEmail" placeholder="email@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Пароль</label>
+        <input type="password" class="form-control" id="loginPassword" placeholder="Пароль" required>
+      </div>
+      <div id="loginError" class="text-danger mt-2" style="display:none;"></div>
+      <button type="submit" class="btn btn-primary btn-block">Увійти</button>
+    </form>
+  </div>
+  
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/main.js"></script>
+  <script src="/js/login.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="/js/firebase-auth.js"></script>
+  <script src="/js/modal.js"></script>
 </body>
 </html>
 

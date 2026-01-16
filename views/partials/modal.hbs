@@ -1,0 +1,21 @@
+<!-- views/partials/modal.hbs -->
+<div class="modal fade" id="appModal" tabindex="-1" role="dialog" aria-labelledby="appModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="appModalLabel">{{modalTitle}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="appModalBody">
+        {{{modalBody}}}
+      </div>
+      {{#if modalFooter}}
+      <div class="modal-footer" id="appModalFooter">
+        {{{modalFooter}}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

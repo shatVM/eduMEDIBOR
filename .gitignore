@@ -1,0 +1,15 @@
+# Environments
+.env
+.env*.local
+
+# Firebase
+config/firebase-service-account.json
+
+# Dependencies
+/node_modules
+/bower_components
+
+# Build
+/build
+/dist
+.DS_Store

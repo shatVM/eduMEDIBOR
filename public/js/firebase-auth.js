@@ -1,3 +1,6 @@
+// Дозволити localhost для розвитку
+//irebase.auth().settings.appVerificationDisabledForTesting = true;
+
 // public/js/firebase-auth.js
 
 // Firebase config injected from server-side .env

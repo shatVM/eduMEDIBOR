@@ -1,17 +1,28 @@
 {{!-- views/partials/header.hbs --}}
 <header class="header">
+  <div class="nav-overlay" id="navOverlay"></div>
   <div class="container">
     <div class="header-content">
       <div class="logo">
         <a href="/">MED_EDU</a>
       </div>
-      <nav class="nav">
+      <button class="burger-menu" id="burgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav" id="mobileNav">
         <a href="/">Головна</a>
         <a href="/courses">Навчальні курси</a>
         <a href="/certification">Сертифікація</a>
         <a href="/about">Про нас</a>
-      </nav>
-      <div class="header-actions">
+        {{#if user}}
+        <div class="nav-divider"></div>
+        <a href="/profile" class="nav-action">👤 Профіль</a>
+        <a href="/logout" class="nav-action logout">🚪 Вийти</a>
+        {{/if}}
+
+        <div class="header-actions">
         <a href="tel:+380800331102" class="phone">(067) 141-12-76</a>
         {{#if user}}
         <div class="dropdown d-inline-block">
@@ -30,6 +41,8 @@
         {{/if}}
         <a href="#enrollment" class="btn-primary">Записатися</a>
       </div>
+      </nav>
+      
     </div>
   </div>
 </header>

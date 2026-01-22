@@ -12,74 +12,96 @@ const initialCourses = [
       category: 'emergency',
       lessons: [
         {
-          title: 'Вступ до BLS',
-          content: 'Основи базової серцево-легеневої реанімації',
-          videoUrl: '',
-          duration: '30 хв',
-          order: 1,
-          quiz: [
-            {
-              question: 'Яка частота компресій грудної клітки при СЛР?',
-              options: ['80-100/хв', '100-120/хв', '120-140/хв', '60-80/хв'],
-              correct_answer: 1
-            }
-          ]
-        },
-        {
-          title: 'Техніка компресій',
-          content: 'Правильна техніка виконання компресій грудної клітки',
-          videoUrl: '',
-          duration: '45 хв',
-          order: 2,
-          quiz: []
-        }
-      ]
-    },
-    // ... (add other courses here in the same format)
-];
+          // database/seeds/courses.seed.js
+          // Simple seed script for a test course using the updated LMS schema
 
-async function seedCourses() {
-    const client = await db.connect();
-    try {
-        await client.query('BEGIN');
-        
-        for (const courseData of initialCourses) {
-            const courseRes = await client.query(
-                `INSERT INTO courses (title, description, duration, price, category, image) 
-                 VALUES ($1, $2, $3, $4, $5, $6)
-                 ON CONFLICT (id) DO NOTHING
+          const pgp = require('pg-promise')();
+          const postgresConfig = require('../../config/postgres.config');
+          const env = process.env.NODE_ENV || 'development';
+          const db = pgp(postgresConfig[env]);
+
+          async function seedCourses() {
+            const client = await db.connect();
+            try {
+              await client.none('BEGIN');
+
+              // 1️⃣ Create the course
+              const courseRes = await client.one(
+                `INSERT INTO courses (title, description, tenant_id, instructor_ids, prerequisites, enrollment_limit, completion_certificate)
+                 VALUES ($1, $2, NULL, NULL, NULL, NULL, false)
                  RETURNING id;`,
-                [courseData.title, courseData.description, courseData.duration, courseData.price, courseData.category, courseData.image]
-            );
-            const courseId = courseRes.rows[0].id;
+                ['Test Course', 'A demo course for testing the LMS.']
+              );
+              const courseId = courseRes.id;
 
-            for (const lessonData of courseData.lessons) {
-                const lessonRes = await client.query(
-                    `INSERT INTO lessons (course_id, title, content, "order", duration, video_url)
-                     VALUES ($1, $2, $3, $4, $5, $6)
-                     RETURNING id;`,
-                    [courseId, lessonData.title, lessonData.content, lessonData.order, lessonData.duration, lessonData.videoUrl]
-                );
-                const lessonId = lessonRes.rows[0].id;
+              // 2️⃣ Add two modules
+              const moduleRes1 = await client.one(
+                `INSERT INTO course_modules (course_id, title, position, unlock_rule, is_optional)
+                 VALUES ($1, $2, $3, NULL, false)
+                 RETURNING id;`,
+                [courseId, 'Module 1: Basics', 1]
+              );
+              const moduleRes2 = await client.one(
+                `INSERT INTO course_modules (course_id, title, position, unlock_rule, is_optional)
+                 VALUES ($1, $2, $3, NULL, false)
+                 RETURNING id;`,
+                [courseId, 'Module 2: Advanced', 2]
+              );
 
-                for (const quizData of lessonData.quiz) {
-                    await client.query(
-                        `INSERT INTO quizzes (lesson_id, question, options, correct_answer)
-                         VALUES ($1, $2, $3, $4);`,
-                        [lessonId, quizData.question, JSON.stringify(quizData.options), quizData.correct_answer]
-                    );
-                }
+              // 3️⃣ Create a quiz set for the first module
+              const quizSetRes = await client.one(
+                `INSERT INTO quiz_sets (module_id, time_limit_minutes, attempts_allowed, passing_score)
+                 VALUES ($1, 10, 3, 70)
+                 RETURNING id;`,
+                [moduleRes1.id]
+              );
+
+              // 4️⃣ Add two questions to that quiz set
+              await client.none(
+                `INSERT INTO quiz_questions (quiz_set_id, question_type, question, options, correct_answers)
+                 VALUES ($1, $2, $3, $4, $5),
+                        ($1, $6, $7, $8, $9);`,
+                [
+                  quizSetRes.id,
+                  'single',
+                  'What is the command to install a package globally?',
+                  JSON.stringify(['npm install <pkg>', 'npm i <pkg>', 'npm install -g <pkg>', 'npm i -g <pkg>']),
+                  JSON.stringify(['npm install -g <pkg>', 'npm i -g <pkg>']),
+                  'multiple',
+                  'Which of the following are Node.js core modules?',
+                  JSON.stringify(['fs', 'http', 'express', 'path']),
+                  JSON.stringify(['fs', 'http', 'path'])
+                ]
+              );
+
+              // 5️⃣ (Optional) Add a second quiz set for the second module
+              const quizSetRes2 = await client.one(
+                `INSERT INTO quiz_sets (module_id, time_limit_minutes, attempts_allowed, passing_score)
+                 VALUES ($1, 15, 2, 80)
+                 RETURNING id;`,
+                [moduleRes2.id]
+              );
+
+              await client.none(
+                `INSERT INTO quiz_questions (quiz_set_id, question_type, question, options, correct_answers)
+                 VALUES ($1, $2, $3, $4, $5);`,
+                [
+                  quizSetRes2.id,
+                  'single',
+                  'Which event is emitted when a server starts listening?',
+                  JSON.stringify(['listening', 'connection', 'request', 'error']),
+                  JSON.stringify(['listening'])
+                ]
+              );
+
+              await client.none('COMMIT');
+              console.log('Test course seeded successfully.');
+            } catch (err) {
+              await client.none('ROLLBACK');
+              console.error('Error seeding test course:', err);
+            } finally {
+              client.done();
             }
-        }
+          }
 
-        await client.query('COMMIT');
-        console.log('Courses, lessons, and quizzes seeded successfully.');
-    } catch (e) {
-        await client.query('ROLLBACK');
-        console.error('Error seeding courses:', e);
-    } finally {
-        client.release();
-    }
-}
-
-seedCourses().catch(console.error);
+          seedCourses().catch(err => console.error(err));

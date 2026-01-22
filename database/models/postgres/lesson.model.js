@@ -2,53 +2,39 @@
 const postgresAdapter = require('../../adapters/postgres.adapter');
 
 class LessonModel {
-  async findById(lessonId) {
+  // Adjusted to match SQL schema (course_modules table)
+  async findById(moduleId) {
     const db = postgresAdapter.getInstance();
-    return db.oneOrNone('SELECT *, lesson_id AS id FROM lessons WHERE lesson_id = $1', [lessonId]);
+    return db.oneOrNone('SELECT *, id AS id FROM course_modules WHERE id = $1', [moduleId]);
   }
 
   async findByCourse(courseId) {
     const db = postgresAdapter.getInstance();
-    return db.any('SELECT *, lesson_id AS id FROM lessons WHERE course_id = $1 ORDER BY "order"', [courseId]);
+    return db.any('SELECT * FROM course_modules WHERE course_id = $1 ORDER BY position', [courseId]);
   }
 
   async countByCourse(courseId) {
     const db = postgresAdapter.getInstance();
-    const result = await db.one('SELECT count(*) FROM lessons WHERE course_id = $1', [courseId]);
+    const result = await db.one('SELECT count(*) FROM course_modules WHERE course_id = $1', [courseId]);
     return parseInt(result.count, 10);
   }
 
-  async create(lesson) {
+  async create(module) {
     const db = postgresAdapter.getInstance();
     const {
       course_id,
       title,
-      description = null,
-      content = null,
-      order,
-      duration_minutes = null,
-      video_url = null,
-      video_duration = null,
-      is_published = true
-    } = lesson;
-    const newLesson = await db.one(
-      `INSERT INTO lessons (course_id, title, description, content, "order", duration_minutes,
-                           video_url, video_duration, is_published)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      position = null,
+      unlock_rule = null,
+      is_optional = false
+    } = module;
+    const newModule = await db.one(
+      `INSERT INTO course_modules (course_id, title, position, unlock_rule, is_optional)
+       VALUES ($1,$2,$3,$4,$5)
        RETURNING *`,
-      [
-        course_id,
-        title,
-        description,
-        content,
-        order,
-        duration_minutes,
-        video_url,
-        video_duration,
-        is_published
-      ]
+      [course_id, title, position, unlock_rule, is_optional]
     );
-    return newLesson;
+    return newModule;
   }
 }
 

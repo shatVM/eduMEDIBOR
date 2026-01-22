@@ -1,0 +1,47 @@
+/* Color palette definitions */
+
+:root {
+  /* ===== BRAND COLORS ===== */
+  --color-primary: #0d63c7;     /* Основний синій (бренд) */
+  --color-primary-soft: #eaf2fd;
+  --color-secondary: #e53935;   /* Акцентний червоний CTA */
+  --color-accent: #1e88e5;      /* Світліший синій */
+  --color-success: #2e7d32;     /* Медичний зелений */
+  --color-warning: #f9a825;
+
+  /* ===== BACKGROUNDS ===== */
+  --background-color: #f3f7fd;  /* Загальний фон */
+  --card-bg: #ffffff;           /* Карточки */
+  --section-bg: #eef4fb;
+
+  /* ===== TEXT ===== */
+  --text-color: #1f2a44;        /* Основний текст */
+  --text-muted: #6b7a90;
+  --text-inverse: #ffffff;
+
+  /* ===== UI ===== */
+  --border-color: #dce6f3;
+  --shadow-soft: 0 8px 24px rgba(13, 99, 199, 0.08);
+
+  /* ===== GRADIENTS ===== */
+  --gradient-main: linear-gradient(135deg, #0d63c7 0%, #1e88e5 100%);
+  --gradient-hero: linear-gradient(135deg, #0b4da2 0%, #0d63c7 100%);
+
+  /* ===== ALIASES ===== */
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
+  --success-color: var(--color-success);
+  --neutral-color: var(--text-muted);
+  --accent-color: var(--color-accent);
+
+  /* Legacy aliases used across the stylesheet */
+  --white: var(--card-bg);
+  --light-bg: var(--background-color);
+  --gradient: var(--gradient-main);
+  /* Footer and UI variables */
+  --footer-bg: #0a2a4a;
+  --footer-color: #cfd8e3;
+  --footer-bg-dark: #08121e;
+}
+
+

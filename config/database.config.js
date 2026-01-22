@@ -3,8 +3,7 @@ module.exports = {
   routing: {
     courses: 'postgres',
     users: 'postgres',
-    lessons: 'postgres',
-    enrollments: 'postgres',
+    lessons: 'postgres', // still used for course_modules (alias kept for compatibility)
     quizzes: 'postgres',
     progress: 'firebase',
     comments: 'firebase',

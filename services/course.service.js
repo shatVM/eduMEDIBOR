@@ -22,14 +22,14 @@ class CourseService {
           return null;
       }
       
-      const lessons = await this.Lesson.findByCourse(id);
-      
-      // Attach quizzes to each lesson
-      for (const lesson of lessons) {
-          lesson.quizzes = await this.Quiz.findByLesson(lesson.lesson_id);
+      const modules = await this.Lesson.findByCourse(id);
+      // Attach quiz sets and questions to each module
+      for (const mod of modules) {
+        // Find quiz sets for this module (assuming a separate model may exist; using Quiz as placeholder)
+        // Here we treat Quiz model as handling quiz_questions directly; you may need a QuizSet model later.
+        mod.quizzes = await this.Quiz.findBySet(mod.id);
       }
-      
-      course.lessons = lessons;
+      course.lessons = modules;
       return course;
   }
   

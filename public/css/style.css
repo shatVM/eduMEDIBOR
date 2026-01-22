@@ -1,18 +1,11 @@
-/* public/css/style.css */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  --primary-color: #1e4d8b;
-  --secondary-color: #dc3545;
-  --text-color: #333;
-  --light-bg: #f5f7fa;
-  --white: #ffffff;
-  --gradient: linear-gradient(135deg, #1e4d8b 0%, #2563a8 100%);
-}
+/* Import color palette definitions */
+@import url('colors.css');
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -38,12 +31,20 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
+
+.header-scrolled {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
 
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 15px 0;
 }
 
@@ -103,6 +104,8 @@ body {
 .nav {
   display: flex;
   gap: 30px;
+  align-items: center;
+  margin-left: auto;
 }
 
 .nav a {
@@ -114,6 +117,8 @@ body {
 
 .nav a:hover {
   color: var(--primary-color);
+  background: rgba(0,0,0,0.04);
+  border-radius: 6px;
 }
 
 .header-actions {
@@ -141,14 +146,15 @@ body {
 }
 
 .btn-primary {
-  background: var(--secondary-color);
-  color: var(--white);
+  background: var(--gradient-main);
+  color: var(--text-inverse);
 }
 
 .btn-primary:hover {
-  background: #c82333;
   transform: translateY(-2px);
 }
+
+
 
 .btn-secondary {
   background: transparent;
@@ -158,8 +164,11 @@ body {
 
 .btn-secondary:hover {
   background: var(--primary-color);
-  color: var(--white);
+  color: #333;
+  border-color: var(--primary-color);
 }
+
+
 
 .btn-full {
   width: 100%;
@@ -170,11 +179,13 @@ body {
 /* Hero Section */
 .hero {
   background: var(--gradient);
-  color: var(--white);
+  color: #333;
   padding: 100px 0;
   position: relative;
   overflow: hidden;
 }
+
+
 
 .hero::before {
   content: '';
@@ -272,6 +283,13 @@ body {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
+/* Generic card style using theme variables */
+.card {
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  border-radius: 8px;
+}
+
 .course-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
@@ -367,68 +385,10 @@ body {
   color: #666;
 }
 
-/* Enrollment Section */
-.enrollment {
-  padding: 80px 0;
-  background: var(--gradient);
-  color: var(--white);
-  text-align: center;
-}
-
-.enrollment h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
-.enrollment p {
-  font-size: 18px;
-  margin-bottom: 40px;
-}
-
-.enrollment-form {
-  max-width: 800px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.enrollment-form input,
-.enrollment-form select {
-  padding: 15px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.enrollment-form button {
-  grid-column: 1 / -1;
-  font-size: 16px;
-}
-
-.form-message {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 5px;
-  display: none;
-}
-
-.form-message.success {
-  background: #28a745;
-  color: white;
-  display: block;
-}
-
-.form-message.error {
-  background: #dc3545;
-  color: white;
-  display: block;
-}
-
 /* Footer */
 .footer {
-  background: #0d3b5f;
-  color: var(--white);
+  background: var(--footer-bg);
+  color: var(--footer-color);
   padding: 60px 0 20px;
 }
 
@@ -510,13 +470,20 @@ body {
   color: rgba(255,255,255,0.6);
 }
 
+html.dark-mode footer {
+  background: var(--footer-bg-dark);
+  color: var(--footer-color);
+}
+
 /* Page Header */
 .page-header {
   background: var(--gradient);
-  color: var(--white);
+  color: var(--text-color);
   padding: 60px 0;
   text-align: center;
 }
+
+
 
 .page-header h1 {
   font-size: 42px;
@@ -659,17 +626,17 @@ body {
 }
 
 .lesson-nav-item:hover {
-  background: #e3e8ee;
+  background: rgba(200, 227, 255, 0.3);
 }
 
 .lesson-nav-item.active {
   background: var(--primary-color);
-  color: var(--white);
+  color: #333;
 }
 
 .lesson-nav-item.completed {
-  background: #28a745;
-  color: var(--white);
+  background: var(--success-color);
+  color: #333;
 }
 
 .lesson-num {
@@ -768,17 +735,17 @@ body {
 
 .quiz-option.selected {
   border-color: var(--primary-color);
-  background: rgba(30, 77, 139, 0.1);
+  background: rgba(168, 213, 255, 0.2);
 }
 
 .quiz-option.correct {
-  border-color: #28a745;
-  background: rgba(40, 167, 69, 0.1);
+  border-color: var(--success-color);
+  background: rgba(184, 230, 184, 0.3);
 }
 
 .quiz-option.incorrect {
-  border-color: #dc3545;
-  background: rgba(220, 53, 69, 0.1);
+  border-color: var(--secondary-color);
+  background: rgba(245, 165, 165, 0.3);
 }
 
 .lesson-navigation {
@@ -800,7 +767,7 @@ body {
 
 .error-page h1 {
   font-size: 120px;
-  color: var(--primary-color);
+  color: var(--secondary-color);
   margin-bottom: 20px;
 }
 
@@ -857,7 +824,7 @@ body {
 
 .contact-item {
   padding: 20px;
-  background: var(--light-bg);
+  background: rgba(168, 213, 255, 0.1);
   border-radius: 8px;
   text-align: center;
 }
@@ -893,7 +860,7 @@ body {
 .value-item {
   text-align: center;
   padding: 25px;
-  background: var(--light-bg);
+  background: rgba(200, 227, 255, 0.2);
   border-radius: 8px;
 }
 
@@ -920,7 +887,7 @@ body {
 .benefit-item {
   text-align: center;
   padding: 25px;
-  background: var(--light-bg);
+  background: rgba(245, 165, 165, 0.1);
   border-radius: 8px;
   border-left: 4px solid var(--secondary-color);
 }
@@ -987,6 +954,7 @@ body {
   .burger-menu {
     display: flex;
     order: 2;
+    z-index: 1001;
     margin-left: auto;
   }
 
@@ -996,16 +964,16 @@ body {
     left: 0;
     width: 100%;
     height: calc(100vh - 60px);
-    background: linear-gradient(135deg, rgba(30, 77, 139, 0.98) 0%, rgba(37, 99, 168, 0.98) 100%);
+    background: var(--primary-color);
     flex-direction: column;
     justify-content: flex-start;
-    padding: 40px 0 140px 0;
+    padding: 30px 20px 140px 20px;
     gap: 0;
-    text-align: center;
+    text-align: left;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 999;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
     overflow-y: auto;
   }
 
@@ -1013,47 +981,43 @@ body {
     transform: translateX(0);
   }
 
-  .nav a {
-    font-size: 18px;
-    font-weight: 600;
-    padding: 18px 20px;
-    display: block;
-    color: var(--white);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-  }
-
-  .nav a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    padding-left: 30px;
-    color: var(--white);
-  }
+  
 
   .nav-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 15px 0;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 12px 0;
+    width: 100%;
   }
 
-  .nav-action {
+  .nav a, .nav-action {
     font-size: 16px;
-    padding: 15px 20px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 14px 8px !important;
+    color: var(--text-inverse);
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  }
+
+  /* Mobile: on hover make item background light for contrast */
+  .nav a:hover,
+  .nav-action:hover {
+    background: rgba(255,255,255,0.12) !important;
+    color: var(--text-inverse) !important;
   }
 
   .nav-action.primary {
-    background: rgba(220, 53, 69, 0.3);
-    border-bottom: 1px solid rgba(220, 53, 69, 0.5) !important;
+    background: rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
     font-weight: 700;
     margin-top: 10px;
+    color: var(--text-inverse);
   }
 
   .nav-action.primary:hover {
-    background: rgba(220, 53, 69, 0.5);
-  }
-
-  .nav-action.logout:hover {
-    background: rgba(220, 53, 69, 0.2);
+    background: rgba(255,255,255,0.14);
+    color: var(--text-inverse);
   }
 
   .nav-actions-mobile {
@@ -1072,66 +1036,26 @@ body {
     flex-wrap: wrap;
   }
 
-  .header-actions {
+  /* Place header actions at bottom of mobile menu */
+  .nav .header-actions {
+    order: 99;
+    margin-left: 0;
     display: flex;
     flex-direction: column;
+    margin-top: auto;
+    padding: 16px 8px 24px 8px;
     width: 100%;
     gap: 10px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, rgba(30, 77, 139, 0.98) 0%, rgba(37, 99, 168, 0.98) 100%);
-    padding: 20px;
-    z-index: 1000;
   }
 
-  .header-actions .phone {
-    display: none;
-  }
-  
-  .header-actions .btn-secondary {
+  .nav .header-actions .btn-primary,
+  .nav .header-actions .btn-secondary {
     width: 100%;
-    text-align: center;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.2);
-    color: var(--white);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 16px;
   }
 
-  .header-actions .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
+ 
 
-  .header-actions .btn-primary {
-    width: 100%;
-    text-align: center;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-    background: var(--secondary-color);
-    color: var(--white);
-  }
-
-  .header-actions .btn-primary:hover {
-    opacity: 0.9;
-  }
-  
   .hero h1 {
     font-size: 32px;
   }
@@ -1203,7 +1127,7 @@ body {
 .addresses-list {
   margin: 30px 0;
   padding: 20px;
-  background: var(--light-bg);
+  background: rgba(168, 213, 255, 0.15);
   border-radius: 8px;
   border-left: 4px solid var(--primary-color);
 }
@@ -1284,3 +1208,97 @@ body {
     height: 350px !important;
   }
 }
+
+/* Registration and Login Modal Styles */
+#registerModal .modal-header,
+#loginModal .modal-header {
+  background-color: var(--primary-color);
+  color: white;
+  border-bottom: none;
+}
+
+#registerModal .modal-title,
+#loginModal .modal-title {
+  color: white;
+  font-weight: bold;
+}
+
+#registerModal .close,
+#loginModal .close {
+  color: white;
+}
+
+#registerModal .form-group label,
+#loginModal .form-group label {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#registerModal .form-control,
+#loginModal .form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+#registerModal .form-control:focus,
+#loginModal .form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(168, 213, 255, 0.25);
+}
+
+#registerModal .btn-success,
+#registerModal .btn-danger,
+#registerModal .btn-primary,
+#loginModal .btn-danger,
+#loginModal .btn-primary {
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+#registerModal .btn-success {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  color: #333;
+}
+
+#registerModal .btn-success:hover {
+  background-color: #a8d8a8;
+  border-color: #a8d8a8;
+  color: #333;
+}
+
+#registerModal .text-muted,
+#loginModal .text-muted {
+  font-size: 13px;
+}
+
+.modal-body hr {
+  margin: 1.5rem 0;
+  border-color: #e0e0e0;
+}
+
+.modal-body p {
+  font-size: 14px;
+}
+
+#registerError,
+#loginError {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgba(245, 165, 165, 0.3);
+  color: #5a5a5a;
+  font-size: 13px;
+}
+
+#registerSuccess {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgba(184, 230, 184, 0.3);
+  color: #5a5a5a;
+  font-size: 13px;
+}
+
+/* Theme switcher functionality removed */

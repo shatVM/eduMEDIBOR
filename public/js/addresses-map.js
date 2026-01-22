@@ -29,8 +29,8 @@ function initMap() {
   addresses.forEach((address, index) => {
     const marker = L.circleMarker([address.lat, address.lng], {
       radius: 8,
-      fillColor: '#007bff',
-      color: '#0056b3',
+      fillColor: '#a8d5ff',
+      color: '#6eb5e8',
       weight: 2,
       opacity: 1,
       fillOpacity: 0.8
@@ -67,8 +67,8 @@ function highlightAddress(index) {
   markers.forEach((marker, i) => {
     if (i === index) {
       marker.setStyle({
-        fillColor: '#28a745',
-        color: '#1e7e34',
+        fillColor: '#b8e6b8',
+        color: '#7ec87e',
         weight: 3,
         radius: 10,
         fillOpacity: 1
@@ -76,8 +76,8 @@ function highlightAddress(index) {
       marker.openPopup();
     } else {
       marker.setStyle({
-        fillColor: '#007bff',
-        color: '#0056b3',
+        fillColor: '#a8d5ff',
+        color: '#6eb5e8',
         weight: 2,
         radius: 8,
         fillOpacity: 0.8
@@ -90,14 +90,14 @@ function highlightAddress(index) {
   googleMarkers.forEach((marker, i) => {
     if (i === index) {
       marker.setIcon(google.maps.marker.PinElement({
-        background: '#28a745',
-        borderColor: '#1e7e34',
+        background: '#b8e6b8',
+        borderColor: '#7ec87e',
         glyphColor: '#fff'
       }).element);
     } else {
       marker.setIcon(google.maps.marker.PinElement({
-        background: '#007bff',
-        borderColor: '#0056b3',
+        background: '#a8d5ff',
+        borderColor: '#6eb5e8',
         glyphColor: '#fff'
       }).element);
     }
@@ -120,7 +120,7 @@ function highlightAddress(index) {
   // Highlight address link
   document.querySelectorAll('.address-link').forEach((link, i) => {
     if (i === index) {
-      link.style.color = '#28a745';
+      link.style.color = '#b8e6b8';
       link.style.fontWeight = 'bold';
     } else {
       link.style.color = '';

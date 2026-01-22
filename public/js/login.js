@@ -19,8 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || 'Login failed');
+        let errorMsg = 'Login failed';
+        try {
+          const err = await response.json();
+          errorMsg = err?.message || errorMsg;
+        } catch (parseErr) {
+          console.error('Failed to parse error response:', parseErr);
+        }
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();

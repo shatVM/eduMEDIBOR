@@ -1,5 +1,5 @@
 const dbManager = require('../database/manager');
-const db = require('../config/database.config');
+const postgresAdapter = require('../database/adapters/postgres.adapter');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const syncService = require('./sync.service');
@@ -10,13 +10,13 @@ class UserService {
   }
 
   async getUserByEmail(email) {
-    const res = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const res = await postgresAdapter.getInstance().query('SELECT * FROM users WHERE email = $1', [email]);
     return res.rows[0] || null;
   }
 
   async createFromFirebase(decoded) {
     const { email, name, picture, uid } = decoded;
-    const res = await db.query(
+    const res = await postgresAdapter.getInstance().query(
       `INSERT INTO users (email, full_name, photo_url, firebase_uid, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *`,
       [email, name, picture, uid]
     );
@@ -25,24 +25,59 @@ class UserService {
 
   async updateFromFirebase(id, decoded) {
     const { name, picture } = decoded;
-    await db.query(
+    await postgresAdapter.getInstance().query(
       `UPDATE users SET full_name = $1, photo_url = $2 WHERE id = $3`,
       [name, picture, id]
     );
   }
 
   async register(userData) {
-    const existingUser = await this.User.findByEmail(userData.email);
+    const { email, password, full_name } = userData;
+
+    // Validate input
+    if (!email || !password || !full_name) {
+      throw new Error('Email, password, and full name are required.');
+    }
+
+    // Check if user already exists
+    const existingUser = await this.getUserByEmail(email);
     if (existingUser) {
       throw new Error('User with this email already exists.');
     }
 
-    const newUser = await this.User.create(userData);
-    
-    // Sync to firebase
-    await syncService.syncOnCreate('users', newUser);
-    
-    return newUser;
+    // Hash password
+    const saltRounds = 10;
+    const password_hash = await bcrypt.hash(password, saltRounds);
+
+    try {
+      // Create user in database
+      const res = await postgresAdapter.getInstance().query(
+        `INSERT INTO users (email, full_name, password_hash, created_at) 
+         VALUES ($1, $2, $3, NOW()) 
+         RETURNING id, email, full_name, role, created_at`,
+        [email, full_name, password_hash]
+      );
+
+      const newUser = res.rows[0];
+
+      // Sync to firebase if available
+      try {
+        await syncService.syncOnCreate('users', newUser);
+      } catch (err) {
+        // Continue even if sync fails
+        console.warn('Firebase sync failed during registration:', err.message);
+      }
+
+      return {
+        id: newUser.id,
+        email: newUser.email,
+        full_name: newUser.full_name,
+        role: newUser.role,
+        created_at: newUser.created_at
+      };
+    } catch (error) {
+      throw new Error('Error creating user: ' + error.message);
+    }
   }
 
   async login(credentials) {
@@ -70,21 +105,13 @@ class UserService {
   
   async getUserById(id, opts = {}) {
     // Основні дані
-    const userRes = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    const userRes = await postgresAdapter.getInstance().query('SELECT * FROM users WHERE id = $1', [id]);
     if (!userRes.rows[0]) return null;
     const user = userRes.rows[0];
 
-    // Курси
-    if (opts.withCourses) {
-      const coursesRes = await db.query(
-        `SELECT c.title, e.status FROM enrollments e JOIN courses c ON e.course_id = c.id WHERE e.user_id = $1`,
-        [id]
-      );
-      user.courses = coursesRes.rows;
-    }
     // Прогрес
     if (opts.withProgress) {
-      const progressRes = await db.query(
+      const progressRes = await postgresAdapter.getInstance().query(
         `SELECT c.title as course_title, p.percent FROM progress p JOIN courses c ON p.course_id = c.id WHERE p.user_id = $1`,
         [id]
       );
@@ -92,7 +119,7 @@ class UserService {
     }
     // Сертифікати
     if (opts.withCertificates) {
-      const certRes = await db.query(
+      const certRes = await postgresAdapter.getInstance().query(
         `SELECT c.title, s.date FROM stats s JOIN courses c ON s.course_id = c.id WHERE s.user_id = $1 AND s.certificate_url IS NOT NULL`,
         [id]
       );
@@ -112,7 +139,7 @@ class UserService {
     }
     if (!fields.length) return;
     values.push(id);
-    await db.query(`UPDATE users SET ${fields.join(', ')} WHERE id = $${idx}`, values);
+    await postgresAdapter.getInstance().query(`UPDATE users SET ${fields.join(', ')} WHERE id = $${idx}`, values);
   }
 }
 

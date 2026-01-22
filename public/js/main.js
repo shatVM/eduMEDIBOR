@@ -77,22 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Animation observer
-  const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-  const observer = new IntersectionObserver((entries) => {
+  const animatedElements = document.querySelectorAll('.course-card, .advantage-card, .stat-item, .value-item, .benefit-item, .certificate-item, .addresses-list');
+
+  if (animatedElements.length > 0) {
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target); // Stop observing after animation
       }
     });
-  }, observerOptions);
+    }, observerOptions);
 
-  document.querySelectorAll('.course-card, .advantage-card, .stat-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
+    animatedElements.forEach(el => {
+      el.classList.add('animate-on-scroll');
+      observer.observe(el);
+    });
+  }
   
   // --- NEW LOGIN FORM LOGIC ---
   const loginForm = document.getElementById('login-form');
@@ -110,68 +112,38 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ email, password })
         });
         
-        const data = await response.json();
+        let data;
+        try {
+          data = await response.json();
+        } catch (parseErr) {
+          console.error('Failed to parse response:', parseErr);
+          data = {};
+        }
 
         if (response.ok) {
           localStorage.setItem('authToken', data.token);
           window.location.href = '/'; // Redirect to homepage
         } else {
-          throw new Error(data.message || 'Login failed');
+          throw new Error(data?.message || 'Login failed');
         }
       } catch (error) {
         if (messageEl) {
-            messageEl.textContent = error.message;
+            messageEl.textContent = error?.message || 'An error occurred';
             messageEl.className = 'form-message error';
         } else {
-            alert(error.message);
+            alert(error?.message || 'An error occurred');
         }
       }
     });
   }
-  
-  
-  // --- UPDATED ENROLLMENT FORM LOGIC ---
-  const enrollmentForm = document.getElementById('enrollmentForm');
-  const formMessage = document.getElementById('formMessage');
-  
-  if (enrollmentForm) {
-    enrollmentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const formData = {
-        name: e.target.name.value,
-        phone: e.target.phone.value,
-        email: e.target.email.value,
-        courseId: e.target.courseId.value
-      };
-      
-      try {
-        // The new architecture does not specify an enrollment route. 
-        // For now, this is a placeholder. A new route and service will be needed.
-        const response = await fetch('/api/enrollments', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // If authentication is required for enrollment:
-            // 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-          },
-          body: JSON.stringify(formData)
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-          formMessage.textContent = data.message;
-          formMessage.className = 'form-message success';
-          enrollmentForm.reset();
-        } else {
-          throw new Error(data.message || 'Помилка відправки заявки');
-        }
-      } catch (error) {
-        formMessage.textContent = 'Помилка: ' + error.message;
-        formMessage.className = 'form-message error';
-      }
+
+  // Certificate modal image swap: set modal image src from thumbnail data
+  document.querySelectorAll('.certificate-item img[data-img-src]').forEach(img => {
+    img.addEventListener('click', (e) => {
+      const src = img.getAttribute('data-img-src') || img.src;
+      const modalImg = document.getElementById('modalCertificateImage');
+      if (modalImg) modalImg.src = src;
     });
-  }
+  });
 
 });

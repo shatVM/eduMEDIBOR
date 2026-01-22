@@ -19,7 +19,6 @@ class DatabaseManager {
     this.postgres.users = require('./models/postgres/user.model');
     this.postgres.lessons = require('./models/postgres/lesson.model');
     this.postgres.quizzes = require('./models/postgres/quiz.model');
-    this.postgres.enrollments = require('./models/postgres/enrollment.model');
 
     // Firebase
     this.firebase.progress = require('./models/firebase/progress.model');

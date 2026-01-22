@@ -83,23 +83,3 @@
     </div>
   </div>
 </section>
-
-<section class="enrollment" id="enrollment">
-  <div class="container">
-    <h2>Залиште заявку</h2>
-    <p>Запишіться на курс просто зараз!</p>
-    <form id="enrollmentForm" class="enrollment-form">
-      <input type="text" name="name" placeholder="Ваше ім'я" required>
-      <input type="tel" name="phone" placeholder="Ваш телефон" required>
-      <input type="email" name="email" placeholder="E-mail" required>
-      <select name="courseId" required>
-        <option value="">Оберіть курс</option>
-        {{#each courses}}
-        <option value="{{id}}">{{title}}</option>
-        {{/each}}
-      </select>
-      <button type="submit" class="btn-primary">Відправити заявку →</button>
-    </form>
-    <div id="formMessage" class="form-message"></div>
-  </div>
-</section>

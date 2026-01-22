@@ -2,47 +2,33 @@
 const postgresAdapter = require('../../adapters/postgres.adapter');
 
 class QuizModel {
-  async findById(quizId) {
+  // Adjusted to match SQL schema (quiz_questions table, linked via quiz_sets)
+  async findById(questionId) {
     const db = postgresAdapter.getInstance();
-    return db.oneOrNone('SELECT *, quiz_id AS id FROM quizzes WHERE quiz_id = $1', [quizId]);
+    return db.oneOrNone('SELECT *, id AS id FROM quiz_questions WHERE id = $1', [questionId]);
   }
 
-  async findByLesson(lessonId) {
+  async findBySet(setId) {
     const db = postgresAdapter.getInstance();
-    return db.any('SELECT *, quiz_id AS id FROM quizzes WHERE lesson_id = $1 ORDER BY "order"', [lessonId]);
+    return db.any('SELECT * FROM quiz_questions WHERE quiz_set_id = $1 ORDER BY id', [setId]);
   }
 
-  async create(quiz) {
+  async create(question) {
     const db = postgresAdapter.getInstance();
     const {
-      lesson_id,
-      question,
-      quiz_type = 'multiple_choice',
+      quiz_set_id,
+      question_type,
+      question: questionText,
       options = null,
-      correct_answer = null,
-      explanation = null,
-      points = 1,
-      order = null,
-      is_required = true
-    } = quiz;
-    const newQuiz = await db.one(
-      `INSERT INTO quizzes (lesson_id, question, quiz_type, options, correct_answer, explanation,
-                           points, "order", is_required)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      correct_answers = null
+    } = question;
+    const newQuestion = await db.one(
+      `INSERT INTO quiz_questions (quiz_set_id, question_type, question, options, correct_answers)
+       VALUES ($1,$2,$3,$4,$5)
        RETURNING *`,
-      [
-        lesson_id,
-        question,
-        quiz_type,
-        options,
-        correct_answer,
-        explanation,
-        points,
-        order,
-        is_required
-      ]
+      [quiz_set_id, question_type, questionText, options, correct_answers]
     );
-    return newQuiz;
+    return newQuestion;
   }
 }
 

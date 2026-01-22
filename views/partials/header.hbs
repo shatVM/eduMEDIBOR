@@ -1,4 +1,4 @@
-{{!-- views/partials/header.hbs --}}
+{{! views/partials/header.hbs }}
 <header class="header">
   <div class="nav-overlay" id="navOverlay"></div>
   <div class="container">
@@ -16,33 +16,58 @@
         <a href="/courses">Навчальні курси</a>
         <a href="/certification">Сертифікація</a>
         <a href="/about">Про нас</a>
+        {{!-- {{#unless user}}
+        <div class="nav-divider"></div>
+        <a href="#" class="nav-action" data-toggle="modal" data-target="#loginModal">🔑 Вхід</a>
+        <a href="#" class="nav-action primary" data-toggle="modal" data-target="#registerModal">🚀 Записатися</a>
+        {{/unless}}
         {{#if user}}
         <div class="nav-divider"></div>
         <a href="/profile" class="nav-action">👤 Профіль</a>
         <a href="/logout" class="nav-action logout">🚪 Вийти</a>
-        {{/if}}
-
+        {{/if}} --}}
         <div class="header-actions">
-        <a href="tel:+380800331102" class="phone">(067) 141-12-76</a>
-        {{#if user}}
-        <div class="dropdown d-inline-block">
-          <a href="#" class="btn-secondary dropdown-toggle d-flex align-items-center" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.25rem 0.75rem;">
-            <img src="{{user.photo_url}}" alt="avatar" class="rounded-circle" width="32" height="32" style="object-fit:cover; margin-right:8px;">
-            {{user.full_name}}
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
-            <a class="dropdown-item" href="/profile">Профіль</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/logout">Вийти</a>
-          </div>
+          {{#if user}}
+            <div class="dropdown d-inline-block">
+              <a
+                href="#"
+                class="btn-secondary dropdown-toggle d-flex align-items-center"
+                id="profileDropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style="padding: 0.25rem 0.75rem;"
+              >
+                <img
+                  src="{{user.photo_url}}"
+                  alt="avatar"
+                  class="rounded-circle"
+                  width="32"
+                  height="32"
+                  style="object-fit:cover; margin-right:8px;"
+                />
+                {{user.full_name}}
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="profileDropdown"
+              >
+                <a class="dropdown-item" href="/profile">Профіль</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">Вийти</a>
+              </div>
+            </div>
+          {{else}}
+            <a
+              href="#"
+              class="btn-primary"
+              data-toggle="modal"
+              data-target="#loginModal"
+            >Вхід</a>
+          {{/if}}
         </div>
-        {{else}}
-        <a href="#" class="btn-secondary" onclick="showModal({title: 'Вхід', body: document.getElementById('loginFormTemplate').innerHTML, footer: ''}); return false;">Вхід</a>
-        {{/if}}
-        <a href="#enrollment" class="btn-primary">Записатися</a>
-      </div>
       </nav>
-      
+
     </div>
   </div>
 </header>

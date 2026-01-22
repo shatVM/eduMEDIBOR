@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const hbs = require('hbs');
 const path = require('path');
+const fs = require('fs');
 const dbManager = require('./database/manager');
 
 const jwt = require('jsonwebtoken');
@@ -39,6 +40,10 @@ const profileRouter = require('./routes/profile.routes');
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
+
+// Register partials explicitly
+hbs.registerPartial('login-modal', hbs.handlebars.compile(require('fs').readFileSync(path.join(__dirname, 'views/partials/login-modal.hbs'), 'utf8')));
+hbs.registerPartial('register-modal', hbs.handlebars.compile(require('fs').readFileSync(path.join(__dirname, 'views/partials/register-modal.hbs'), 'utf8')));
 
 // Handlebars helpers
 hbs.registerHelper('eq', (a, b) => a === b);
@@ -120,13 +125,32 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/certification', (req, res) => {
-    // This will be refactored to fetch actual certificates
-  res.render('certification', { title: 'Сертифікація' });
+    // Read sample certificate images from public/images/certificate_sample
+  try {
+    const certDir = path.join(__dirname, 'public', 'images', 'certificate_sample');
+    let files = [];
+    try {
+      files = fs.readdirSync(certDir);
+    } catch (e) {
+      files = [];
+    }
+    // Filter common image extensions and map to public URLs
+    const images = files
+      .filter(f => /\.(jpe?g|png|gif|webp|svg)$/i.test(f))
+      .map(f => `/images/certificate_sample/${encodeURIComponent(f)}`);
+
+    res.render('certification', { title: 'Сертифікація', certificates: images });
+  } catch (err) {
+    console.error('Failed to load certificate samples', err);
+    res.render('certification', { title: 'Сертифікація', certificates: [] });
+  }
 });
 
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Вхід' }); // We need to create login.hbs
 });
+
+
 
 
 // 404 Handler

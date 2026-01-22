@@ -1,0 +1,40 @@
+/* COLOR REFERENCE QUICK GUIDE */
+
+/*
+Theme Variables (defined in :root of style.css)
+------------------------------------------------
+Light Theme (default) – edit these values to adjust the light palette:
+  --color-primary   – primary brand color (used for headings, links, gradients)
+  --color-secondary – secondary/accent color (buttons, alerts)
+  --color-success   – success/confirmation color
+  --color-neutral   – neutral/background color
+  --color-accent    – additional accent color (highlights)
+  --text-color      – default text color
+  --background-color – page background
+  --card-bg         – card / element background
+  --gradient        – gradient used in hero/header
+
+Dark Theme – overrides for dark mode (html.dark-mode). Change these to adjust the dark palette:
+  --color-primary   – primary color for dark mode
+  --color-secondary – secondary color for dark mode
+  --color-success   – success color for dark mode
+  --color-neutral   – neutral color for dark mode
+  --color-accent    – accent color for dark mode
+  --text-color      – text color in dark mode
+  --background-color – page background in dark mode
+  --card-bg         – card background in dark mode
+  --gradient        – gradient for dark mode
+
+How to change a theme:
+  1. Open `public/css/style.css`.
+  2. Locate the `:root { … }` block for the light theme and modify the hex values.
+  3. Locate the `html.dark-mode { … }` block for the dark theme and modify those values.
+  4. Save – the changes apply instantly (CSS variables are used throughout the site).
+
+Example usage in CSS (no need to reference pastel names):
+  .btn-primary { background: var(--color-secondary); color: #333; }
+  .success-msg { background: var(--color-success); color: #333; }
+  .card { background: var(--card-bg); border: 1px solid var(--color-neutral); }
+  .header { background: var(--gradient); }
+*/
+

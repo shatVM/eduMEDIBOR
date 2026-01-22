@@ -2,14 +2,15 @@
 const postgresAdapter = require('../../adapters/postgres.adapter');
 
 class CourseModel {
+  // Adjusted to match SQL schema (courses table with id, tenant_id, title, description, instructor_ids, prerequisites, enrollment_limit, completion_certificate)
   async findById(courseId) {
     const db = postgresAdapter.getInstance();
-    return db.oneOrNone('SELECT *, course_id AS id FROM courses WHERE course_id = $1', [courseId]);
+    return db.oneOrNone('SELECT *, id AS id FROM courses WHERE id = $1', [courseId]);
   }
 
   async findAll() {
     const db = postgresAdapter.getInstance();
-    return db.any('SELECT *, course_id AS id FROM courses');
+    return db.any('SELECT * FROM courses');
   }
 
   async create(course) {
@@ -17,38 +18,17 @@ class CourseModel {
     const {
       title,
       description = null,
-      category = null,
-      level = 'beginner',
-      duration_hours = null,
-      price = null,
-      currency = 'UAH',
-      image_url = null,
-      instructor_id = null,
-      is_published = false,
-      max_students = null,
-      rating = null,
-      rating_count = 0
+      tenant_id = null,
+      instructor_ids = null,
+      prerequisites = null,
+      enrollment_limit = null,
+      completion_certificate = false
     } = course;
     const newCourse = await db.one(
-      `INSERT INTO courses (title, description, category, level, duration_hours, price, currency,
-                           image_url, instructor_id, is_published, max_students, rating, rating_count)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+      `INSERT INTO courses (title, description, tenant_id, instructor_ids, prerequisites, enrollment_limit, completion_certificate)
+       VALUES ($1,$2,$3,$4,$5,$6,$7)
        RETURNING *`,
-      [
-        title,
-        description,
-        category,
-        level,
-        duration_hours,
-        price,
-        currency,
-        image_url,
-        instructor_id,
-        is_published,
-        max_students,
-        rating,
-        rating_count
-      ]
+      [title, description, tenant_id, instructor_ids, prerequisites, enrollment_limit, completion_certificate]
     );
     return newCourse;
   }

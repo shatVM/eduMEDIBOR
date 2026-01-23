@@ -758,6 +758,38 @@ html.dark-mode footer {
   padding: 15px 30px;
   font-size: 16px;
 }
+/* Unified button style for lesson navigation */
+.lesson-navigation button {
+  padding: 12px 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  color: var(--text-inverse);
+  background: var(--gradient-main);
+}
+/* Finish button gradient using color-secondary */
+.lesson-navigation .finish {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+}
+/* Hover effects */
+.lesson-navigation button:hover {
+  transform: translateY(-2px);
+}
+/* Mobile adjustments for lesson navigation */
+@media (max-width: 768px) {
+  .lesson-navigation {
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+  }
+  .lesson-navigation button {
+    flex: 1 1 100%;
+    padding: 12px 10px;
+    font-size: 14px;
+  }
+}
 
 /* Error Page */
 .error-page {

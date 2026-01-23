@@ -12,20 +12,20 @@
         <form id="registerForm">
           <div class="form-group">
             <label for="registerFullName">Повне ім'я</label>
-            <input type="text" class="form-control" id="registerFullName" placeholder="Іван Петренко" required>
+            <input type="text" class="form-control" id="registerFullName" name="full_name" placeholder="Іван Петренко" required>
           </div>
           <div class="form-group">
             <label for="registerEmail">Email</label>
-            <input type="email" class="form-control" id="registerEmail" placeholder="email@example.com" required>
+            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="email@example.com" required>
           </div>
           <div class="form-group">
             <label for="registerPassword">Пароль</label>
-            <input type="password" class="form-control" id="registerPassword" placeholder="Мінімум 6 символів" required>
+            <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Мінімум 6 символів" required>
             <small class="form-text text-muted">Пароль повинен містити принаймні 6 символів</small>
           </div>
           <div class="form-group">
             <label for="registerPasswordConfirm">Підтвердіть пароль</label>
-            <input type="password" class="form-control" id="registerPasswordConfirm" placeholder="Повторіть пароль" required>
+            <input type="password" class="form-control" id="registerPasswordConfirm" name="passwordConfirm" placeholder="Повторіть пароль" required>
           </div>
           <div id="registerError" class="text-danger mt-2" style="display:none;"></div>
           <div id="registerSuccess" class="text-success mt-2" style="display:none;"></div>

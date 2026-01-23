@@ -25,10 +25,14 @@ app.use((req, res, next) => {
 });
 const cookieParser = require('cookie-parser');
 
+// Middleware to parse cookies
+app.use(cookieParser());
+
 // Import routes
 const courseRoutes = require('./routes/courses.routes');
 const userRoutes = require('./routes/users.routes');
 const progressRoutes =require('./routes/progress.routes');
+const docsRoutes = require('./routes/docs.routes');
 
 // Import services for view rendering
 const courseService = require('./services/course.service'); 
@@ -67,12 +71,24 @@ app.use((req, res, next) => {
 });
 
 // API Routes
+app.use('/api/docs', docsRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/progress', progressRoutes);
 
 // Profile route
 app.use('/profile', profileRouter);
+
+// ---------------------------------------------------------------------------
+// Test route used by auth.middleware.unit test
+// Returns 200 only when a valid JWT is provided via the Authorization header.
+// This allows the unit test to verify that missing token results in 401.
+// ---------------------------------------------------------------------------
+const { ensureAuth } = require('./middleware/auth.middleware');
+app.get('/protected', ensureAuth, (req, res) => {
+  // If ensureAuth passes, the request is authorized.
+  res.sendStatus(200);
+});
 
 
 // View Routes

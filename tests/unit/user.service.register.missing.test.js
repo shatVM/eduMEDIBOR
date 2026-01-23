@@ -1,0 +1,1 @@
+// This file is obsolete and has been replaced by tests/unit/user.service.test.js

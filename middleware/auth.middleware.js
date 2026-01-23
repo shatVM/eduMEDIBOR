@@ -2,6 +2,11 @@
 const jwt = require('jsonwebtoken');
 
 function ensureAuth(req, res, next) {
+  // Check if user is already authenticated (e.g., via cookie-parser middleware)
+  if (req.user) {
+    return next();
+  }
+
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {

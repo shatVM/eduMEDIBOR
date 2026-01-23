@@ -1,0 +1,1 @@
+[\n  {\n    "id": 1,\n    "role": "doctor",\n    "name": "Test Doctor",\n    "email": "doctor@test.local"\n  },\n  {\n    "id": 2,\n    "role": "sanitary",\n    "name": "Test Sanitary",\n    "email": "sanitary@test.local"\n  }\n]

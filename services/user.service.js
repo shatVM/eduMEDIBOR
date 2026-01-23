@@ -31,8 +31,9 @@ class UserService {
     );
   }
 
-  async register(userData) {
+  async create(userData, options = {}) {
     const { email, password, full_name } = userData;
+    const { before, after } = options;
 
     // Validate input
     if (!email || !password || !full_name) {
@@ -45,36 +46,51 @@ class UserService {
       throw new Error('User with this email already exists.');
     }
 
+    if (before) {
+      await before(userData);
+    }
+
     // Hash password
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(password, saltRounds);
 
+    // Split full_name into first_name and last_name
+    const nameParts = full_name.split(' ');
+    const first_name = nameParts[0];
+    const last_name = nameParts.slice(1).join(' ');
+
     try {
       // Create user in database
       const res = await postgresAdapter.getInstance().query(
-        `INSERT INTO users (email, full_name, password_hash, created_at) 
-         VALUES ($1, $2, $3, NOW()) 
-         RETURNING id, email, full_name, role, created_at`,
-        [email, full_name, password_hash]
+        `INSERT INTO users (email, first_name, last_name, password_hash) 
+         VALUES ($1, $2, $3, $4) 
+         RETURNING user_id, email, first_name, last_name, role, registration_date`,
+        [email, first_name, last_name, password_hash]
       );
 
-      const newUser = res.rows[0];
+      const dbUser = res.rows[0];
+      const newUser = {
+        id: dbUser.user_id,
+        email: dbUser.email,
+        full_name: `${dbUser.first_name} ${dbUser.last_name}`,
+        role: dbUser.role,
+        created_at: dbUser.registration_date
+      };
+
+
+      if (after) {
+        await after(newUser);
+      }
 
       // Sync to firebase if available
       try {
         await syncService.syncOnCreate('users', newUser);
       } catch (err) {
         // Continue even if sync fails
-        console.warn('Firebase sync failed during registration:', err.message);
+        console.warn('Firebase sync failed during creation:', err.message);
       }
 
-      return {
-        id: newUser.id,
-        email: newUser.email,
-        full_name: newUser.full_name,
-        role: newUser.role,
-        created_at: newUser.created_at
-      };
+      return newUser;
     } catch (error) {
       throw new Error('Error creating user: ' + error.message);
     }
@@ -126,6 +142,13 @@ class UserService {
       user.certificates = certRes.rows;
     }
     return user;
+  }
+
+  async deleteUser(id) {
+    if (!id) {
+      throw new Error('User ID is required for deletion.');
+    }
+    await postgresAdapter.getInstance().query('DELETE FROM users WHERE id = $1', [id]);
   }
 
   async updateUserProfile(id, data) {

@@ -33,7 +33,7 @@ router.post('/firebase-login', async (req, res) => {
 // POST /api/users/register - Register a new user
 router.post('/register', async (req, res) => {
   try {
-    const newUser = await userService.register(req.body);
+    const newUser = await userService.create(req.body);
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -26,6 +26,7 @@
   /* ===== GRADIENTS ===== */
   --gradient-main: linear-gradient(135deg, #0d63c7 0%, #1e88e5 100%);
   --gradient-hero: linear-gradient(135deg, #0b4da2 0%, #0d63c7 100%);
+  --gradient-secondary: linear-gradient(135deg, #e53935 0%, #c62828 100%);
 
   /* ===== ALIASES ===== */
   --primary-color: var(--color-primary);
